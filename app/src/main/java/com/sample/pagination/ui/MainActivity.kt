@@ -1,6 +1,7 @@
 package com.sample.pagination.ui
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +25,9 @@ class MainActivity : CoreActivity<ActivityMainBinding, ProductViewModel>(R.layou
         super.onCreate(savedInstanceState)
         binding.lifecycleOwner = this
         binding.rvProduct.adapter = adapter
+        adapter.initItem { _, data ->
+            Toast.makeText(this, data.name, Toast.LENGTH_SHORT).show()
+        }
         lifecycleScope.launch {
             launch {
                 viewModel.productList().collect {
