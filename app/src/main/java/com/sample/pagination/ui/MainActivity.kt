@@ -1,18 +1,17 @@
 package com.sample.pagination.ui
 
 import android.os.Bundle
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.crocodic.core.base.activity.CoreActivity
-import com.crocodic.core.base.activity.NoViewModelActivity
 import com.crocodic.core.base.adapter.PaginationAdapter
-import com.sample.pagination.data.model.Product
+import com.crocodic.core.base.adapter.PaginationLoadState
 import com.sample.pagination.R
+import com.sample.pagination.data.model.Product
 import com.sample.pagination.databinding.ActivityMainBinding
 import com.sample.pagination.databinding.ItemProductBinding
+import com.sample.pagination.databinding.StateLoadingCustomBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -24,9 +23,13 @@ class MainActivity : CoreActivity<ActivityMainBinding, ProductViewModel>(R.layou
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.lifecycleOwner = this
-        binding.rvProduct.adapter = adapter
-        adapter.initItem { _, data ->
-            Toast.makeText(this, data.name, Toast.LENGTH_SHORT).show()
+        with(adapter) {
+            // Create footer loading
+            val loadStateFooter = PaginationLoadState<StateLoadingCustomBinding>(R.layout.state_loading_custom)
+            binding.rvProduct.adapter = withLoadStateFooter(loadStateFooter)
+
+            // Or just use default loading view
+            // binding.rvProduct.adapter = withLoadStateFooter(PaginationLoadState.default)
         }
         lifecycleScope.launch {
             launch {
@@ -36,8 +39,9 @@ class MainActivity : CoreActivity<ActivityMainBinding, ProductViewModel>(R.layou
             }
             launch {
                 adapter.loadStateFlow.collectLatest {
-                    binding.progressCircular.isVisible =
-                        it.refresh == LoadState.Loading || it.append == LoadState.Loading
+                    // Only show parent layout loading on first loading
+                    val loading = it.append == LoadState.Loading || it.refresh == LoadState.Loading
+                    binding.progressCircular.isVisible = loading && adapter.snapshot().isEmpty()
                 }
             }
         }

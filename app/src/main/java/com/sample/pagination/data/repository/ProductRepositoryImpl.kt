@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flow
 
 class ProductRepositoryImpl: ProductRepository {
 
-    val api = ProductApi()
+    private val api = ProductApi()
 
     override fun getAllProduct(page: Int, limit: Int): Flow<List<Product>> = flow {
         val product = api.getProduct(page, limit)

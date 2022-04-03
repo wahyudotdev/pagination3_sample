@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../.gradle/caches/transforms-3/45fd85187beae80731d8524b04fd71e7/transformed/androidcore-4.0.2-local-debug/res/layout/state_loading_pagination.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17864583333333334" />
         <entry key="app/src/main/res/layout/item_product.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_sample.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/state_page_load.xml" value="0.22" />
       </map>
     </option>
   </component>
