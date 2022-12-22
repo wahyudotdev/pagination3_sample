@@ -17,8 +17,7 @@ class ProductViewModel : CoreViewModel() {
 
     fun productList() = Pager(CorePagingSource.config(itemPerPage), pagingSourceFactory = {
         CorePagingSource(firstPage) { page, limit ->
-            val data = repository.getAllProduct(page, limit).first()
-            data // List<Product>
+            repository.getAllProduct(page, limit).first() // List<Product>
         }
     }).flow.cachedIn(viewModelScope)
 
